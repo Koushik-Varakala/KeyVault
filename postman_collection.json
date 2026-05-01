@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "KeyVault API — PrimeTradeAI Assignment",
+    "description": "API Key Management & Rate Limiting Platform by Koushik Varakala",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "apiKey", "value": "", "type": "string", "description": "Set this after generating an API key" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/register", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/v1/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "v1", "auth", "logout"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔑 API Keys",
+      "item": [
+        {
+          "name": "List API Keys",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/api-keys", "host": ["{{baseUrl}}"], "path": ["api", "v1", "api-keys"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate API Key",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/api-keys", "host": ["{{baseUrl}}"], "path": ["api", "v1", "api-keys"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Production App\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke API Key",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/v1/api-keys/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "api-keys", ":id"], "variable": [{ "key": "id", "value": "KEY_ID_HERE" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📝 Notes (CRUD)",
+      "item": [
+        {
+          "name": "List Notes",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/notes", "host": ["{{baseUrl}}"], "path": ["api", "v1", "notes"] }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Note",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/notes", "host": ["{{baseUrl}}"], "path": ["api", "v1", "notes"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My First Note\",\n  \"content\": \"This is the content of my note.\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Note by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/notes/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "notes", ":id"], "variable": [{ "key": "id", "value": "NOTE_ID_HERE" }] }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Note",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/notes/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "notes", ":id"], "variable": [{ "key": "id", "value": "NOTE_ID_HERE" }] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Title\",\n  \"content\": \"Updated content here.\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Note",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/v1/notes/:id", "host": ["{{baseUrl}}"], "path": ["api", "v1", "notes", ":id"], "variable": [{ "key": "id", "value": "NOTE_ID_HERE" }] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🛡️ Protected API (API Key Auth)",
+      "item": [
+        {
+          "name": "Get Protected Market Data",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{apiKey}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/protected-data", "host": ["{{baseUrl}}"], "path": ["api", "v1", "protected-data"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 Usage",
+      "item": [
+        {
+          "name": "Get Usage Stats",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/usage", "host": ["{{baseUrl}}"], "path": ["api", "v1", "usage"] }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "👑 Admin",
+      "item": [
+        {
+          "name": "List All Users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/v1/admin/users", "host": ["{{baseUrl}}"], "path": ["api", "v1", "admin", "users"] }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

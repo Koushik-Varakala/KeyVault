@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(USER)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  apiKeys      ApiKey[]
+  notes        Note[]
+}
+
+model ApiKey {
+  id          String       @id @default(uuid())
+  keyHash     String       @unique
+  maskedKey   String
+  name        String       @default("Default Key")
+  isActive    Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  expiresAt   DateTime?
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestLogs RequestLog[]
+}
+
+model RequestLog {
+  id         String   @id @default(uuid())
+  endpoint   String
+  method     String   @default("GET")
+  statusCode Int      @default(200)
+  timestamp  DateTime @default(now())
+  apiKeyId   String
+  apiKey     ApiKey   @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
